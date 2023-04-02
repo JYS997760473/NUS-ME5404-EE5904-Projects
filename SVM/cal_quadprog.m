@@ -1,4 +1,4 @@
-function [alpha, support_vector_idx] = cal_disfun(num_data, H_matrix, C, data, label, p)
+function [alpha, support_vector_idx] = cal_quadprog(num_data, H_matrix, C, data, label, p)
     f = -ones(num_data, 1);
     A = [];
     b = [];

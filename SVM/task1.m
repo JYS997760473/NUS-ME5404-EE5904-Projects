@@ -34,7 +34,9 @@ end
 % calculate the sum of weights*kernel values and the bias values
 weights_support_vector = zeros(num_support_vector,1);
 for i = 1: num_support_vector
-    weights_x_SV(i) = sum((alpha .* train_label) .* kernel_support_vector(:,i));
+    weights_support_vector(i) = sum((alpha .* train_label) .* kernel_support_vector(:,i));
     bias0(i) = label_support_vector(i) - weights_support_vector(i);
 end
-bias_mean = sum(bias0) / num_support_vector;
+bias_mean = mean(bias0);
+
+ 
