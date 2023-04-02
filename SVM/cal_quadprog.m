@@ -1,4 +1,5 @@
-function [alpha, support_vector_idx] = cal_quadprog(num_data, H_matrix, C, data, label, p)
+function [alpha, support_vector_idx] = cal_quadprog(num_data, H_matrix, C, data, label)
+    H_matrix = reshape(H_matrix, [num_data, num_data]);
     f = -ones(num_data, 1);
     A = [];
     b = [];
