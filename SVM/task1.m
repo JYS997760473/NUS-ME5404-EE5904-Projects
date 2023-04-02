@@ -79,8 +79,8 @@ for p = 1: 5
         disp("polynomial "+p+" satify Mercer's condition");
         [alpha_poly{p}, support_vector_idx_poly{p}] = cal_quadprog(num_train, ...
                                     H_polynomial(p,:,:), 1e7, train_data, train_label);
-        [kernel_support_vector_poly{p}, bias_mean_poly(p)] = cal_disfun_linear(...
-                        support_vector_idx_poly{p}, train_label, num_train, train_data, alpha_poly{p});
+        [kernel_support_vector_poly{p}, bias_mean_poly(p)] = cal_disfun_poly(...
+                        support_vector_idx_poly{p}, train_label, num_train, train_data, alpha_poly{p}, p);
     end
 end
 
@@ -108,8 +108,8 @@ for p = 1: 5
             disp("optimizing soft margin polynomial "+p+" "+"C: "+C(idx));
             [alpha_poly_soft_tmp{idx}, support_vector_idx_poly_soft_tmp{idx}] = cal_quadprog(num_train, ...
                                         H_polynomial(p,:,:), C(idx), train_data, train_label);
-            [kernel_support_vector_poly_soft_tmp{idx}, bias_mean_poly_soft(p,idx)] = cal_disfun_linear(...
-    support_vector_idx_poly_soft_tmp{idx}, train_label, num_train, train_data, alpha_poly_soft_tmp{idx});
+            [kernel_support_vector_poly_soft_tmp{idx}, bias_mean_poly_soft(p,idx)] = cal_disfun_poly(...
+support_vector_idx_poly_soft_tmp{idx}, train_label, num_train, train_data, alpha_poly_soft_tmp{idx}, p);
         end
         alpha_poly_soft{p} = alpha_poly_soft_tmp;
         support_vector_idx_poly_soft{p} = support_vector_idx_poly_soft_tmp;
