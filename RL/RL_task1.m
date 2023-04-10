@@ -20,8 +20,8 @@ reachOpts = zeros(10, 1);
 totalRewards = zeros(10, 1);
 numTrials = zeros(10, 1);
 reachGoals = zeros(10, 1);
-epsilon_type = 3;
-gamma = 0.5;
+epsilon_type = 2;
+gamma = 0.9;
 numGoal = 0;  % record number of times reaching the goal
 
 for run = 1: runs
@@ -56,12 +56,12 @@ if length(optimalIndexs) == 0
     drawOptPolicy(optimalPolicy, OptimalReward);
 
     % draw optimal path
-    % drawOptPath(optimalPolicy, OptimalReward);
+    drawOptPath(optimalPolicy, OptimalReward);
 else
     optimalPolicy = getPolicyFromQtable(QtableCell{optimalIndexs(1)});
     OptimalReward = totalRewards(optimalIndexs(1));
     % draw optimal policy on the 2D grid
     drawOptPolicy(optimalPolicy, OptimalReward);
     % draw optimal path
-    % drawOptPath(optimalPolicy, OptimalReward);
+    drawOptPath(optimalPolicy, OptimalReward);
 end
