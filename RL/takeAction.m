@@ -31,7 +31,9 @@ function epsilon = getEpsilon(epsilon_type, k)
         epsilon = 100 / (100 + k);
     elseif epsilon_type == 3
         epsilon = (1 + log(k)) / k;
-    else
+    elseif epsilon_type == 4
         epsilon = (1 + 5 * log(k)) / k;
+    else
+        epsilon = 300 / (300 + k);
     end
 end
