@@ -59,8 +59,10 @@ function [numGoal, average_execution_time, qevalstates] = Q_learning(qevalreward
     qevalstates = optimalPolicy;
 
     % draw optimal policy on the 2D grid
+    disp("drawing optimal policy");
     drawOptPolicy(optimalPolicy, OptimalReward);
 
     % draw optimal path
+    disp("drawing optimal path");
     drawOptPath(optimalPolicy, OptimalReward);
 end
