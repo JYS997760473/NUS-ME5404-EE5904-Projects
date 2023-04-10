@@ -11,13 +11,17 @@ max_trials = 3000;
 runs = 10;
 % initialize a Qtable:
 Qtable = zeros(100, 4);
-epsilon_type = 4;
-gamma = 0.9;
+QtableCell = {};
+epsilon_type = 1;
+gamma = 0.5;
+numGoal = 0;  % record number of times reaching the goal
 
-in = 1;
 for run = 1: runs
     % run program 10 times Qlearning
-    [reach_goal, execution_time, Qtable] = Qlearning(Qtable, reward, ...
-        epsilon_type, gamma);
-    reach_goal
+    [reach_goal, execution_time, newQtable, numTrials] = Qlearning(Qtable, ... 
+            reward, epsilon_type, gamma);
+    if reach_goal == 1
+        numGoal = numGoal + 1;
+    end
+    QtableCell{run} = newQtable;
 end

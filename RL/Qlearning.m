@@ -1,18 +1,20 @@
-function [reach_goal, execution_time, newQtable] = Qlearning(oldQtable, reward, ...
-                    epsilon_type, gamma)
+function [reach_goal, execution_time, newQtable, numTrials] = Qlearning(oldQtable, ...
+            reward, epsilon_type, gamma)
     % one time running Q-learning
 
     % stop watch
     tic;
+    % old Qtable is the initialization Q table
     Qtable = oldQtable;
     max_trials = 3000;
-    current_state = 1;
-    reach_goal = 0;
     max_steps = 1000;
 
     for i = 1: max_trials
-        Qtable = oldQtable;
+        % different episodes
+        % every episode's initial state is 1
         current_state = 1;
+        reach_goal = 0;
+        % traverse every steps:
         for k = 1: max_steps
             % judge whether reach the goal
             if current_state == 100
@@ -38,7 +40,12 @@ function [reach_goal, execution_time, newQtable] = Qlearning(oldQtable, reward, 
             current_state = next_state;
             current_action = next_action;
         end
+        % if reach the goal, finish.
+        if reach_goal == 1
+            break;
+        end
     end
+    numTrials = i;
     newQtable = Qtable;
     execution_time = toc;
 end
