@@ -20,8 +20,8 @@ reachOpts = zeros(10, 1);
 totalRewards = zeros(10, 1);
 numTrials = zeros(10, 1);
 reachGoals = zeros(10, 1);
-epsilon_type = 4;
-gamma = 0.9;
+epsilon_type = 3;
+gamma = 0.5;
 numGoal = 0;  % record number of times reaching the goal
 
 for run = 1: runs
@@ -40,15 +40,28 @@ for run = 1: runs
     run
 end
 
+average_execution_time = sum(executionTimes(find(reachGoals == 1))) / numGoal;
+
 % choose the trial which reach the optimal policy
 optimalIndexs = find(reachOpts == 1);
 if length(optimalIndexs) == 0
-    error("no optimal policy");
-end
-optimalPolicy = getPolicyFromQtable(QtableCell{optimalIndexs(1)});
-OptimalReward = totalRewards(optimalIndexs(1));
-% draw optimal policy on the 2D grid
-drawOptPolicy(optimalPolicy, OptimalReward);
+    disp("no optimal policy, using goal reacher policy");
+    indexes = find(reachGoals == 1);
+    if length(indexes) == 0
+        error("no reaching goal episode");
+    end
+    optimalPolicy = getPolicyFromQtable(QtableCell{indexes(1)});
+    OptimalReward = totalRewards(indexes(1));
+    % draw optimal policy on the 2D grid
+    drawOptPolicy(optimalPolicy, OptimalReward);
 
-% draw optimal path
-drawOptPath(optimalPolicy, OptimalReward);
+    % draw optimal path
+    % drawOptPath(optimalPolicy, OptimalReward);
+else
+    optimalPolicy = getPolicyFromQtable(QtableCell{optimalIndexs(1)});
+    OptimalReward = totalRewards(optimalIndexs(1));
+    % draw optimal policy on the 2D grid
+    drawOptPolicy(optimalPolicy, OptimalReward);
+    % draw optimal path
+    % drawOptPath(optimalPolicy, OptimalReward);
+end

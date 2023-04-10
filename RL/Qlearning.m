@@ -17,12 +17,14 @@ function [reach_goal, reachOpt, execution_time, newQtable, numTrials, totalRewar
         current_state = 1;
         totalReward = 0;
         beforeQtable = Qtable;
+        current_reach_goal = 0;
         % traverse every step:
         for k = 1: max_steps
             % judge whether reach the goal
             if current_state == 100
                 % reach the goal, break this trial
                 reach_goal = 1;
+                current_reach_goal = 1;
                 break;
             end
             % choose an action
@@ -36,6 +38,7 @@ function [reach_goal, reachOpt, execution_time, newQtable, numTrials, totalRewar
             % alpha is the same as epsilon
             alpha = epsilon;
             if alpha < 0.005
+                current_reach_goal = 0;
                 break;
             end
             % update Q value of current state with current action
@@ -50,9 +53,11 @@ function [reach_goal, reachOpt, execution_time, newQtable, numTrials, totalRewar
         end
         % if reach the optimal policy, Qtable converges, finish this run.
         afterQtable = Qtable;
-        if reach_goal == 1 & max(abs(afterQtable - beforeQtable)) < 0.05
+        if current_reach_goal == 1 & max(max(abs(afterQtable - beforeQtable))) < 0.05
             reachOpt = 1;
             break;
+        else
+            continue;
         end
     end
     numTrials = i;
