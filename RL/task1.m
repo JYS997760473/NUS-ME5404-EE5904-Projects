@@ -11,17 +11,44 @@ max_trials = 3000;
 runs = 10;
 % initialize a Qtable:
 Qtable = zeros(100, 4);
+% store 10 runs' Qtables
 QtableCell = {};
-epsilon_type = 1;
-gamma = 0.5;
+% store 10 runs' goal reacher excution time 
+executionTimes = zeros(10, 1);
+reachOpts = zeros(10, 1);
+% store 10 runs' goal reacher total reward
+totalRewards = zeros(10, 1);
+numTrials = zeros(10, 1);
+reachGoals = zeros(10, 1);
+epsilon_type = 4;
+gamma = 0.9;
 numGoal = 0;  % record number of times reaching the goal
 
 for run = 1: runs
     % run program 10 times Qlearning
-    [reach_goal, execution_time, newQtable, numTrials] = Qlearning(Qtable, ... 
-            reward, epsilon_type, gamma);
+    [reach_goal, reachOpt, execution_time, newQtable, numTrial, totalReward] = Qlearning(...
+        Qtable, reward, epsilon_type, gamma);
     if reach_goal == 1
         numGoal = numGoal + 1;
+        reachGoals(run) = 1;
     end
+    executionTimes(run) = execution_time;
+    numTrials(run) = numTrial;
+    totalRewards(run) = totalReward;
     QtableCell{run} = newQtable;
+    reachOpts(run) = reachOpt;
+    run
 end
+
+% choose the trial which reach the optimal policy
+optimalIndexs = find(reachOpts == 1);
+if length(optimalIndexs) == 0
+    error("no optimal policy");
+end
+optimalPolicy = getPolicyFromQtable(QtableCell{optimalIndexs(1)});
+OptimalReward = totalRewards(optimalIndexs(1));
+% draw optimal policy on the 2D grid
+drawOptPolicy(optimalPolicy, OptimalReward);
+
+% draw optimal path
+drawOptPath(optimalPolicy, OptimalReward);
